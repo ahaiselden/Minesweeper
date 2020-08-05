@@ -1,0 +1,168 @@
+﻿@page "/"
+
+@implements IDisposable;
+
+@using Minesweeper.Models;
+@using System.Drawing;
+@using System.Timers;
+
+<style>
+    html {
+        background-color: #c0c0c0;
+        background-image: url(images/win31default.png);
+        background-repeat: no-repeat;
+        background-position: bottom left;
+        min-height: 100%;
+    }
+
+    body {
+        background-color: rgba(0,0,0,0);
+        min-height: 100%;
+    }
+</style>
+
+<div class="container h-100 mh-100 pt-5">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="card">
+            <div class="card-header">
+                <div class="top-row">
+                    <div class="float-left d-inline-block win31formswitch">
+                    </div>
+                    <div class="d-inline-block text-center">
+                        Minesweeper - Blazor WASM
+                    </div>
+                    <div class="float-right d-inline-block win31formswitch">
+                    </div>
+                </div>
+                <div class="row menu-row">
+                    <div class="col">
+                        <div class="float-left">
+                            @foreach (Minesweeper.Enumerations.Difficulty difficulty in Enum.GetValues(typeof(Minesweeper.Enumerations.Difficulty)))
+                            {
+                                <a class="minesweeper-difficulty-selector"
+                                   @onclick="@(() => selectedDifficulty = difficulty)">
+                                    <span class="minesweeper-difficulty-selector-text @(selectedDifficulty == difficulty ? "minesweeper-difficulty-selector-text-selected" : string.Empty)">
+                                        @((minesweeper?.Difficulty ?? Enumerations.Difficulty.Beginner) == Enumerations.Difficulty.Beginner ? difficulty.ToString().Substring(0,3) : difficulty.ToString())
+                                    </span>
+                                </a>
+                            }
+                        </div>
+                        <div class="float-right">
+                            <a class="minesweeper-start-game" @onclick="@(() => OnStartGameClick())"><span style="text-decoration:underline;">S</span>tart Game</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body pt-1">
+                <div class="row minesweeper-scores">
+                    <div class="d-inline-block col text-left pl-0 pr-0">
+                        <span class="minesweeper-count pr-2 pl-2">@minesweeper.UnflaggedCount.ToString("000")</span>
+                    </div>
+                    <div class="d-flex col text-center pl-0 pr-0">
+                        <img class="minesweeper-smiley" src="/images/@minesweeper.GetImageFromState()" />
+                    </div>
+                    <div class="d-inline-block col text-right pl-0 pr-0">
+                        <span class="minesweeper-count pr-2 pl-2">@(ElapsedSeconds.ToString("000"))</span>
+                    </div>
+                </div>
+                <div class="row d-inline-block minesweeper-tiles mt-2">
+                    @if (minesweeper?.Tiles != null)
+                    {
+                        for (int y = 0; y < minesweeper.Tiles.GetLength(1); y++)
+                        {
+                            <div class="row flex-nowrap no-gutters minesweeper-row">
+                                @for (int x = 0; x < minesweeper.Tiles.GetLength(0); x++)
+                                {
+                                    int localX = x, localY = y;
+                                    if (minesweeper.Tiles[x, y].IsInspected)
+                                    {
+                                        <button class="col minesweeper-tile-clicked minesweeper-tile-clicked-@minesweeper.Tiles[x, y].SurroundingMines"
+                                                oncontextmenu="return false;"
+                                                disabled="@((minesweeper.State == Enumerations.GameState.Won || minesweeper.State == Enumerations.GameState.Lost))">
+                                            @if (minesweeper.Tiles[x, y].SurroundingMines > 0 && minesweeper.Tiles[x, y].HasMine == false)
+                                            {
+                                                <span>@minesweeper.Tiles[x, y].SurroundingMines.ToString()</span>
+                                            }
+                                            else if (minesweeper.Tiles[x, y].HasMine)
+                                            {
+                                                <img src="/images/mine.png" />
+                                            }
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="col minesweeper-tile"
+                                                oncontextmenu="return false;"
+                                                @onmousedown="(() => minesweeper.State = Enumerations.GameState.InPlay)"
+                                                @onmouseout="(() => { if (minesweeper.State == Enumerations.GameState.InPlay) { minesweeper.State = Enumerations.GameState.InProgress; } })"
+                                                @onmouseup="((e) => OnGameTileClick(e, localX, localY))"
+                                                disabled="@((minesweeper.State == Enumerations.GameState.Won || minesweeper.State == Enumerations.GameState.Lost))">
+                                            @if (minesweeper.Tiles[x, y].HasFlag)
+                                            {
+                                                <img src="/images/flag.png" />
+                                            }
+                                        </button>
+                                    }
+
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code{
+    private Minesweeper.Game.Minesweeper minesweeper = null;
+
+    private Timer timer;
+
+    private int ElapsedSeconds = 0;
+
+    private Minesweeper.Enumerations.Difficulty selectedDifficulty = Enumerations.Difficulty.Intermediate;
+
+    protected override void OnInitialized()
+    {
+        minesweeper = new Minesweeper.Game.Minesweeper(selectedDifficulty);
+        minesweeper.State = Enumerations.GameState.Won;
+    }
+
+    private void OnStartGameClick()
+    {
+        minesweeper = new Minesweeper.Game.Minesweeper(selectedDifficulty);
+
+        ElapsedSeconds = 0;
+
+        timer?.Dispose();
+        timer = new Timer(1000);
+        timer.Elapsed += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                ElapsedSeconds++;
+                StateHasChanged();
+            });
+        };
+
+        timer.Start();
+    }
+
+    private void OnGameTileClick(MouseEventArgs e, int x, int y)
+    {
+        minesweeper.TileClicked(x, y, e.Button);
+
+        if (minesweeper.State == Enumerations.GameState.Lost || minesweeper.State == Enumerations.GameState.Won)
+        {
+            timer?.Stop();
+            timer?.Dispose();
+        }
+
+    }
+
+    void IDisposable.Dispose()
+    {
+        timer?.Dispose();
+    }
+}
