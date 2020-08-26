@@ -100,20 +100,17 @@
                                     }
                                     else
                                     {
-                                        if (minesweeper.State == GameState.Lost && localTile.HasMine)
+                                        if (minesweeper.State == GameState.Lost && localTile.HasFlag && !localTile.HasMine)
                                         {
-                                            if (localTile.HasFlag)
-                                            {
-                                                <button class="col minesweeper-tile-clicked" oncontextmenu="return false;" disabled="@true">
-                                                    <img class="minesweeper-tile-image" src="images/mine-incorrect.png" />
-                                                </button>
-                                            }
-                                            else
-                                            {
-                                                <button class="col minesweeper-tile-clicked" oncontextmenu="return false;" disabled="@true">
-                                                    <img class="minesweeper-tile-image" src="images/mine.png" />
-                                                </button>
-                                            }
+                                            <button class="col minesweeper-tile-clicked" oncontextmenu="return false;" disabled="@true">
+                                                <img class="minesweeper-tile-image" src="images/mine-incorrect.png" />
+                                            </button>
+                                        }
+                                        else if (minesweeper.State == GameState.Lost && !localTile.HasFlag && localTile.HasMine)
+                                        {
+                                            <button class="col minesweeper-tile-clicked" oncontextmenu="return false;" disabled="@true">
+                                                <img class="minesweeper-tile-image" src="images/mine.png" />
+                                            </button>
                                         }
                                         else
                                         {
