@@ -19,6 +19,9 @@
     <Content Update="wwwroot\images\flag.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\images\mine-incorrect.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\images\mine.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

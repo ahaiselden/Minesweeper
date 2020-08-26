@@ -79,7 +79,7 @@ namespace Minesweeper.Game
                 }
             }
 
-            State = GameState.InProgress;
+            State = GameState.NotStarted;
         }
 
         public void TileClicked(int x, int y, long mouseButton)
@@ -104,28 +104,35 @@ namespace Minesweeper.Game
             {
                 if (mouseButton == 0)
                 {
-                    Tiles[x, y].IsInspected = true;
-
-                    if (Tiles[x, y].HasMine)
+                    if (Tiles[x, y].HasFlag)
                     {
-                        State = GameState.Lost;
+                        State = GameState.InProgress;
                     }
                     else
                     {
-                        investigatedTileCount++;
+                        Tiles[x, y].IsInspected = true;
 
-                        if (Tiles[x, y].HasFlag)
+                        if (Tiles[x, y].HasMine)
                         {
-                            Tiles[x, y].HasFlag = false;
-                            UnflaggedCount++;
+                            State = GameState.Lost;
                         }
-
-                        if (Tiles[x, y].SurroundingMines == 0)
+                        else
                         {
-                            ExposeSurroundingArea(x, y);
-                        }
+                            investigatedTileCount++;
 
-                        State = GameState.InProgress;
+                            if (Tiles[x, y].HasFlag)
+                            {
+                                Tiles[x, y].HasFlag = false;
+                                UnflaggedCount++;
+                            }
+
+                            if (Tiles[x, y].SurroundingMines == 0)
+                            {
+                                ExposeSurroundingArea(x, y);
+                            }
+
+                            State = GameState.InProgress;
+                        }
                     }
                 }
                 else if (mouseButton == 2)
@@ -141,6 +148,8 @@ namespace Minesweeper.Game
                         Tiles[x, y].HasFlag = true;
                         UnflaggedCount--;
                     }
+
+                    State = GameState.InProgress;
                 }
             }
 

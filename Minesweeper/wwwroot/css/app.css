@@ -22,31 +22,15 @@ app {
 }
 
 .top-row {
-    height: 3.5rem;
     display: flex;
     align-items: center;
+    border-bottom: solid 2px black;
 }
 
 .main {
     flex: 1;
     background-color: rgba(0,0,0,0);
 }
-
-    .main .top-row {
-        background-color: #fd7e14;
-        border-bottom: 1px solid #d6d5d5;
-        justify-content: flex-end;
-    }
-
-        .main .top-row > a, .main .top-row .btn-link {
-            white-space: nowrap;
-            margin-left: 1.5rem;
-        }
-
-        .main .top-row a:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
 
 .row {
     margin: 0;
@@ -75,16 +59,18 @@ app {
 }
 
 .card-body {
-    background-color: #c0c0c0;
-    padding: .2rem;
-    margin: auto;
+    background-color: #BEC1C6;
+    padding: .6rem;
+    border-top: solid 5px #FDFDFF;
+    border-left: solid 5px #FDFDFF;
+    border-right: solid 5px #83868B;
+    border-bottom: solid 5px #83868B;
 }
 
 .main .card-header .top-row {
     font-weight: bold;
     background-color: #000080;
     color: white;
-    height: 1.5rem;
     display: block;
 }
 
@@ -114,6 +100,15 @@ app {
     background-color: #c0c0c0;
 }
 
+    .win31formswitch + .float-left {
+        border-right: solid 2px black;
+    }
+
+    .win31formswitch + .float-right {
+        border-left: solid 2px black;
+    }
+
+
 .minesweeper-difficulty-selector {
     cursor: pointer;
 }
@@ -133,10 +128,11 @@ app {
 }
 
 .minesweeper-smiley {
-    border-top: solid 3px #D3D3D3;
-    border-left: solid 3px #D3D3D3;
-    border-right: solid 3px #A8A8A8;
-    border-bottom: solid 3px #A8A8A8;
+    border-top: solid 4px #D3D3D3;
+    border-left: solid 4px #D3D3D3;
+    border-right: solid 4px #A8A8A8;
+    border-bottom: solid 4px #A8A8A8;
+    padding: 2px;
     margin-left: auto;
     margin-right: auto;
     height: 2.4em;
@@ -146,10 +142,10 @@ app {
 }
 
 .minesweeper-tiles {
-    border-top: solid 4px #A8A8A8;
-    border-left: solid 4px #A8A8A8;
-    border-right: solid 4px #D3D3D3;
-    border-bottom: solid 4px #D3D3D3;
+    border-top: solid 5px #88898D;
+    border-left: solid 5px #88898D;
+    border-right: solid 5px #F9FDFF;
+    border-bottom: solid 5px #F9FDFF;
 }
 
 .minesweeper-scores {
@@ -157,21 +153,25 @@ app {
     border-left: solid 4px #A8A8A8;
     border-right: solid 4px #D3D3D3;
     border-bottom: solid 4px #D3D3D3;
+    background-color: #C0C3C8;
 }
 
 .minesweeper-count {
-    background-color: black;
+    background-color: #00000B;
     color: red;
     font-family: Orbitron;
-    font-size: 1.8rem;
-    border: solid black 3px;
-    border-top: solid 3px #A8A8A8;
-    border-left: solid 3px #A8A8A8;
-    border-right: solid 3px #D3D3D3;
-    border-bottom: solid 3px #D3D3D3;
+    font-size: 1.5rem;
+    border: solid #00000B 1px;
+    border-top: solid 1px #A8A8A8;
+    border-left: solid 1px #A8A8A8;
+    border-right: solid 1px #D3D3D3;
+    border-bottom: solid 1px #D3D3D3;
+    padding: 0;
+    margin: 6px;
     display: inline-block;
-    width: 100px;
+    width: 85px;
     cursor: default;
+    text-align: center;
 }
 
 .minesweeper-tile {
@@ -180,15 +180,24 @@ app {
     max-width: 2rem;
     max-height: 2rem;
     display: inline-block;
-    background-color: #CAC9C7;
-    -webkit-box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.1);
+    background-color: #C0C3C8;
+    border-right: 3px solid #84878C;
+    border-bottom: 3px solid #84878C;
+    border-top: 3px solid #F9FDFF;
+    border-left: 3px solid #F9FDFF;
+    /*    -webkit-box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.1);
     -moz-box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.1);
-    box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.1);
+    box-shadow: inset -2px -2px 0px 0px rgba(0,0,0,0.1);*/
 }
 
     .minesweeper-tile:focus {
         outline: none;
     }
+
+.minesweeper-tile-image{
+    position:relative;
+    top:-1px;
+}
 
 .minesweeper-tile-clicked {
     font-family: "Courier Prime";
@@ -199,13 +208,18 @@ app {
     max-width: 2rem;
     max-height: 2rem;
     display: inline-block;
-    background-color: #CAC9C7;
-    border: 0;
+    background-color: #C0C3C8;
+    border: 1px solid #84878C;
+    overflow: no-content;
 }
 
     .minesweeper-tile-clicked:focus {
         outline: none;
     }
+
+.minesweeper-tile-clicked-mine {
+    background-color: red;
+}
 
 .minesweeper-tile-clicked-1 {
     color: #2A00FA;
