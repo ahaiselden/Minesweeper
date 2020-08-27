@@ -36,6 +36,7 @@ A recreation of the Microsoft game Minesweeper written in Blazor WebAssembly.
 - Improved fonts for scoring
 - Styling changes to better emulate window 3.1.
 - Help in windows 3.1 notepad style window.
+- Overflow on small screens so 'menu' is not changed.
 
 
 <!-- CONTACT -->
