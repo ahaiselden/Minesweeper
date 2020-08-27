@@ -5,7 +5,7 @@
   <a href="https://https://github.com/ahaiselden/Minesweeper/">
     <img src="/Minesweeper/wwwroot/images/mine.png" alt="Logo" width="80" height="80">
   </a>
-  <h3 align="center">Minesweeper written in Blazor WebAssembly styled in a windows 3.1 theme, developed to experiment with Blazor's capabilities</h3>
+  <h3 align="center">Minesweeper written in Blazor WebAssembly styled with a Microsoft Windows 3.1 theme, developed to experiment with Blazor's capabilities</h3>
 </p>
 
 
