@@ -45,6 +45,7 @@ A recreation of the Microsoft game Minesweeper written in Blazor WebAssembly.
 Your Name - Alan Haiselden
 
 Project Link: https://github.com/ahaiselden/Minesweeper
+
 Project Demo Link: https://ahaiselden.github.io/Minesweeper/
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
